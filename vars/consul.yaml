@@ -1,0 +1,23 @@
+global:
+  tls:
+    enabled: true
+    caCert:
+      secretName: certs
+      secretKey: ca.pem
+    caKey:
+      secretName: certs
+      secretKey: ca-key.pem
+  gossipEncryption:
+    autoGenerate: false
+    secretName: consul-gossip-key
+    secretKey: key
+
+server:
+  affinity: ""
+  replicas: 3
+
+client:
+  enabled: false
+
+connectInject:
+  enabled: false

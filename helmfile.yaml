@@ -1,0 +1,27 @@
+repositories:
+ - name: hashicorp
+   url: https://helm.releases.hashicorp.com
+
+releases:
+- name: consul
+  namespace: vault
+  createNamespace: true
+  chart: hashicorp/consul
+  wait: true
+  values:
+    - vars/consul.yaml
+  hooks:
+    - events: ["preapply"]
+      showlogs: true
+      command: ./scripts/prepare-certs.sh
+    - events: ["postuninstall"]
+      showlogs: true
+      command: ./scripts/cleanup-certs.sh
+
+- name: vault
+  needs:
+    - consul
+  namespace: vault
+  chart: hashicorp/vault
+  values:
+    - vars/vault.yaml
